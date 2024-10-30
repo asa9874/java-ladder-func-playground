@@ -5,14 +5,12 @@ import java.util.List;
 
 public class OutputView {
 
-    private static final String START_LINE = "|";
-    private static final String BLANK_LINE = "    |";
-    private static final String RUNG_LINE = "----|";
+    private static final String BLANK_LINE = "|    ";
+    private static final String RUNG_LINE = "|----";
 
 
     public void printStatusOfLadders(List<List<Boolean>> rungsStatusPerLadder, int height) {
         for (int nowPosition = height - 1; nowPosition >= 0; nowPosition--) {
-            System.out.print(START_LINE);
             printStatusAtLadderPosition(rungsStatusPerLadder, nowPosition);
             System.out.println();
         }
@@ -35,7 +33,7 @@ public class OutputView {
         return rungPosition.get(nowPosition);
     }
 
-    public void printInputCountOfLaddersGuide() {
+    public void printInputCountOfLineGuide() {
         System.out.println("사다리의 넓이는 몇 개인가요?");
     }
 
@@ -43,4 +41,9 @@ public class OutputView {
         System.out.println("사다리의 높이는 몇 개인가요?");
     }
 
+    public void printResult(List<Integer> result) {
+        for (int index = 0; index < result.size(); index++) {
+            System.out.printf("%d -> %d%n", index, result.get(index));
+        }
+    }
 }

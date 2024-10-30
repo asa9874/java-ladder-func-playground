@@ -1,37 +1,38 @@
 package controller;
 
-import domain.CountOfLadders;
+import domain.CountOfLine;
 import domain.Height;
-import domain.Ladders;
+import domain.Ladder;
 import domain.RungsBuilder;
-import service.LaddersService;
+import service.LadderService;
 import view.InputView;
 import view.OutputView;
 
 public class LadderGameController {
 
-    private final LaddersService laddersService;
+    private final LadderService laddersService;
     private final OutputView outputView;
     private final InputView inputView;
 
     public LadderGameController(RungsBuilder rungsBuilder) {
-        this.laddersService = new LaddersService(rungsBuilder);
+        this.laddersService = new LadderService(rungsBuilder);
         this.outputView = new OutputView();
         this.inputView = new InputView();
     }
 
     public void start() {
-        CountOfLadders countOfLadders = getCountOfLadders();
+        CountOfLine countOfLine = getcountOfLine();
         Height height = getHeight();
 
-        Ladders ladders = laddersService.createLadders(countOfLadders, height);
-        outputView.printStatusOfLadders(ladders.getRungsStatusAtLadder(), height.value());
+        Ladder ladder = laddersService.createLadder(countOfLine, height);
+        outputView.printStatusOfLadders(ladder.getRightRungStatus(), height.value());
+        outputView.printResult(ladder.getResult());
     }
 
-    private CountOfLadders getCountOfLadders() {
-        outputView.printInputCountOfLaddersGuide();
-        final int valueOfCountOfLadders = inputView.getUserIntegerInput();
-        return new CountOfLadders(valueOfCountOfLadders);
+    private CountOfLine getcountOfLine() {
+        outputView.printInputCountOfLineGuide();
+        final int valueOfCountOfLine = inputView.getUserIntegerInput();
+        return new CountOfLine(valueOfCountOfLine);
     }
 
     private Height getHeight() {
