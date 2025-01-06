@@ -1,13 +1,11 @@
 package ladder;
 
-import ladder.generator.PointGenerator;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import ladder.generator.StaticPointGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class LadderTest {
 
@@ -23,20 +21,5 @@ class LadderTest {
 
         // then
         assertThat(result).isEqualTo(expected);
-    }
-    
-    static class StaticPointGenerator implements PointGenerator {
-        
-        private static final List<List<Boolean>> points = List.of(
-                List.of(true, false, true, false),
-                List.of(false, true, false, false)
-        );
-        
-        private int i = 0;
-        
-        @Override
-        public List<Boolean> generate(int size) {
-            return points.get(i++);
-        }
     }
 }

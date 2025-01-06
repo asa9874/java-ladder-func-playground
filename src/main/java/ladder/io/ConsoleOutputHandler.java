@@ -7,19 +7,26 @@ import java.util.List;
 public class ConsoleOutputHandler implements OutputHandler {
 
     @Override
-    public void printLadder(Ladder ladder) {
+    public void printLadder(Ladder ladder, Participants participants, GameResults gameResults) {
+        participants.getParticipants().forEach((participant) -> System.out.print(participant.getName() + " "));
+        System.out.println();
+
         final List<Line> lines = ladder.getLines();
         for (Line line : lines) {
             printLine(line.getPoints());
         }
+
+        gameResults.getGameResults().forEach((gameResult) -> System.out.print(gameResult.getName() + "   "));
+        System.out.println();
     }
 
     @Override
-    public void printResult(Positions positions) {
+    public void printResult(Participants participants, GameResults gameResults) {
         System.out.println();
-        for (Position position : positions.getPositions()) {
-            System.out.println(position.getStartIndex() + " -> " + position.getCurrentIndex());
-        }
+        participants.getParticipants().forEach(participant -> {
+            System.out.print(participant.getName() + " -> ");
+            System.out.println(gameResults.findByIndex(participant.getCurrentIndex()).getName());
+        });
     }
 
     private void printLine(List<Boolean> points) {

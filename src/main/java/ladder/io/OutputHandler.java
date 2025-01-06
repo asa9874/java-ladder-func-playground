@@ -1,14 +1,12 @@
 package ladder.io;
 
+import ladder.GameResults;
 import ladder.Ladder;
-import ladder.Position;
-
-import java.util.List;
-import ladder.Positions;
+import ladder.Participants;
 
 public interface OutputHandler {
 
-    void printLadder(Ladder ladder);
+    void printLadder(Ladder ladder, Participants participants, GameResults gameResults);
 
-    void printResult(Positions positions);
+    void printResult(Participants participants, GameResults gameResults);
 }
