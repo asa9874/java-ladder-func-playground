@@ -8,6 +8,11 @@ public class LadderOutputView {
     private static String BLANK = "    ";
 
     public void printLine(List<Boolean> line) {
+        if (line == null || line.isEmpty()) {
+            System.out.println("|");
+            return;
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("|");
 
