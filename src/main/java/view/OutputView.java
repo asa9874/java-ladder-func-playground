@@ -1,8 +1,8 @@
 package view;
 
-import domain.Ladder;
 import domain.Line;
 import domain.Point;
+import domain.ladder.Ladder;
 import java.util.List;
 
 public final class OutputView {
@@ -16,30 +16,31 @@ public final class OutputView {
     }
 
     public static void printLadderResultTitle() {
+        System.out.println();
         System.out.println(LADDER_RESULT_TITLE);
         System.out.println();
     }
 
-    public static void paintLadder(final Ladder ladder) {
+    public static void drawLadder(final Ladder ladder) {
         for (Line line : ladder.getLines()) {
-            paintLine(line);
+            drawLine(line);
         }
     }
 
-    private static void paintLine(final Line line) {
+    private static void drawLine(final Line line) {
         StringBuilder builder = new StringBuilder();
         builder.append(BLANK);
 
         List<Point> points = line.getPoints();
         for (int i = 0; i < points.size() - 1; i++) {
             builder.append(VERTICAL);
-            builder.append(paintHorizontalIfConnected(points.get(i)));
+            builder.append(drawHorizontalIfConnected(points.get(i)));
         }
         builder.append(VERTICAL);
         System.out.println(builder);
     }
 
-    private static String paintHorizontalIfConnected(final Point point) {
+    private static String drawHorizontalIfConnected(final Point point) {
         if (point.right()) {
             return HORIZONTAL;
         }
