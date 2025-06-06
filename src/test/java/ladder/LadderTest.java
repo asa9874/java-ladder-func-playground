@@ -1,8 +1,12 @@
 package ladder;
 
+import generator.RandomGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import strategy.RandomLinkStrategy;
+import tuner.DefaultLadderTuner;
+import tuner.LadderTuner;
+import view.InputView;
 
 import java.util.List;
 
@@ -13,24 +17,31 @@ class LadderTest {
     @DisplayName("사다리 생성 시, row 수만큼 Line이 생성되어야 한다")
     void shouldCreateLinesEqualToRowCount() {
         // given
-        int rowCount = 4;
-        int columnCount = 3;
+        Height height = Height.from(3);
+        Width  width = Width.from(4);
+
+        RandomLinkStrategy strategy = new RandomLinkStrategy(new RandomGenerator());
+        LadderTuner tuner = new DefaultLadderTuner(strategy);
 
         // when
-        Ladder ladder = new Ladder(rowCount, columnCount, new RandomLinkStrategy());
+        Ladder ladder = new Ladder(height, width, strategy, tuner);
 
         // then
         List<Line> lines = ladder.getLines();
-        assertThat(lines).hasSize(rowCount);
+        assertThat(lines).hasSize(height.height());
     }
 
     @Test
     @DisplayName("generateLadder 호출 시, 최소 하나 이상의 Link가 연결되어야 한다")
     void shouldGenerateAtLeastOneLinkWhenLadderIsInitialized() {
         // given
-        int rowCount = 3;
-        int columnCount = 4;
-        Ladder ladder = new Ladder(rowCount, columnCount, new RandomLinkStrategy());
+        Height height = Height.from(3);
+        Width  width = Width.from(4);
+
+        RandomLinkStrategy strategy = new RandomLinkStrategy(new RandomGenerator());
+        LadderTuner tuner = new DefaultLadderTuner(strategy);
+
+        Ladder ladder = new Ladder(height, width, strategy, tuner);
 
         // when
         boolean atLeastOneLinked = ladder.getLines().stream()

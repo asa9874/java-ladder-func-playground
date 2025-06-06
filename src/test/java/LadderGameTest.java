@@ -1,7 +1,13 @@
+import generator.RandomGenerator;
+import ladder.Height;
 import ladder.Ladder;
+import ladder.LadderGame;
+import ladder.Width;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import strategy.RandomLinkStrategy;
+import tuner.DefaultLadderTuner;
+import tuner.LadderTuner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,9 +16,13 @@ class LadderGameTest {
     @DisplayName("LadderGame 생성 시 내부 Ladder에 최소 하나 이상 연결되어야 한다")
     void shouldGenerateLadderWithAtLeastOneLinked() {
         // given
-        int row = 4;
-        int column = 4;
-        LadderGame game = new LadderGame(row, column, new RandomLinkStrategy());
+        Height height = Height.from(4);
+        Width width = Width.from(4);
+
+        RandomLinkStrategy strategy = new RandomLinkStrategy(new RandomGenerator());
+        LadderTuner tuner = new DefaultLadderTuner(strategy);
+
+        LadderGame game = new LadderGame(height, width, strategy, tuner);
 
         // when
         Ladder ladder = game.getLadder();
@@ -29,7 +39,13 @@ class LadderGameTest {
     @DisplayName("LadderGame에서 getLadder 호출 시 Ladder 객체를 반환해야 한다")
     void shouldReturnLadderWhenGetLadderIsCalled() {
         // given
-        LadderGame game = new LadderGame(3, 4, new RandomLinkStrategy());
+        Height height = Height.from(3);
+        Width width = Width.from(4);
+
+        RandomLinkStrategy strategy = new RandomLinkStrategy(new RandomGenerator());
+        LadderTuner tuner = new DefaultLadderTuner(strategy);
+
+        LadderGame game = new LadderGame(height, width, strategy, tuner);
 
         // when
         Ladder ladder = game.getLadder();
