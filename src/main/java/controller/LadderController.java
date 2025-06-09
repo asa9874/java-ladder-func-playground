@@ -3,6 +3,8 @@ package controller;
 import domain.Height;
 import domain.Width;
 import domain.dto.RequestLadder;
+import domain.dto.ResponseLadder;
+import domain.dto.ResponseLadderResult;
 import domain.ladder.Ladder;
 import domain.ladder.LadderFactory;
 import strategy.LineGenerator;
@@ -23,7 +25,7 @@ public class LadderController {
         LadderFactory factory = new LadderFactory();
         Ladder ladder = factory.draw(width, height, lineGenerator);
 
-        drawLadder(ladder);
+        drawLadder(ladder, width);
     }
 
     private RequestLadder inputLadderSettings() {
@@ -37,8 +39,13 @@ public class LadderController {
         return new RandomLineGenerator(pointGenerator);
     }
 
-    private void drawLadder(final Ladder ladder) {
+    private void drawLadder(final Ladder ladder, final Width width) {
         OutputView.printLadderResultTitle();
-        OutputView.drawLadder(ladder);
+
+        ResponseLadder responseLadder = ResponseLadder.from(ladder);
+        OutputView.drawLadder(responseLadder);
+
+        ResponseLadderResult responseResult = ResponseLadderResult.of(ladder, width);
+        OutputView.printLadderResult(responseResult);
     }
 }
