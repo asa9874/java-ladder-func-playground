@@ -3,8 +3,7 @@ package domain.ladder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import domain.Height;
-import domain.Width;
+import domain.player.Players;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -25,13 +24,14 @@ class LadderFactoryTest {
                 new boolean[]{true, false, true, false}
         ));
         LadderFactory factory = new LadderFactory();
+        List<String> names = List.of("dd", "dd2", "dd3");
 
         // when
-        Ladder ladder = factory.draw(Width.from(4), Height.from(4), fixedGenerator);
+        Ladder ladder = factory.draw(Players.from(names), Height.from(4), fixedGenerator);
 
         // then
         assertThat(ladder).isNotNull();
-        assertThat(ladder.isFullyConnected(Width.from(4))).isTrue();
+        assertThat(ladder.isFullyConnected(Players.from(names))).isTrue();
     }
 
     @Test
@@ -44,9 +44,10 @@ class LadderFactoryTest {
                         new boolean[]{false, false, false, false})
         );
         LadderFactory factory = new LadderFactory();
+        List<String> names = List.of("dd", "dd2", "dd3");
 
         // when & then
-        assertThatThrownBy(() -> factory.draw(Width.from(4), Height.from(4), fixedGenerator))
+        assertThatThrownBy(() -> factory.draw(Players.from(names), Height.from(4), fixedGenerator))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유효한 사다리를 생성할 수 없습니다.");
     }

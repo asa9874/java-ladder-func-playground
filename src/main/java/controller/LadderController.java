@@ -1,12 +1,17 @@
 package controller;
 
-import domain.Height;
-import domain.Width;
-import domain.dto.RequestLadder;
+import static constants.ReservedWord.FINISH_KEYWORD;
+
+import domain.dto.RequestLadderGame;
 import domain.dto.ResponseLadder;
-import domain.dto.ResponseLadderResult;
+import domain.ladder.Height;
 import domain.ladder.Ladder;
 import domain.ladder.LadderFactory;
+import domain.ladder.result.LadderResultBoard;
+import domain.player.Players;
+import domain.runningResult.Results;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import strategy.LineGenerator;
 import strategy.PointGenerator;
 import strategy.RandomLineGenerator;
@@ -16,22 +21,32 @@ import view.OutputView;
 
 public class LadderController {
 
+    private static final String NOT_FOUND_PLAYER_RETRY_MESSAGE = "존재하지 않는 플레이어입니다. 다시 입력해주세요.";
+
     public void play() {
-        RequestLadder requestLadder = inputLadderSettings();
-        Width width = requestLadder.toWidth();
-        Height height = requestLadder.toHeight();
+        RequestLadderGame request = inputLadderSettings();
+        Players players = request.toPlayers();
+        Height height = request.toHeight();
+        Results results = request.toResults(players.size());
 
-        LineGenerator lineGenerator = createLineGenerator();
-        LadderFactory factory = new LadderFactory();
-        Ladder ladder = factory.draw(width, height, lineGenerator);
+        Ladder ladder = drawLadder(players, height);
+        LadderResultBoard resultBoard = LadderResultBoard.of(players, ladder, results);
 
-        drawLadder(ladder, width);
+        showGameScreen(players, ladder, results);
+        showPlayerResult(resultBoard);
     }
 
-    private RequestLadder inputLadderSettings() {
-        String width = InputView.inputLadderWidth();
+    private RequestLadderGame inputLadderSettings() {
+        String names = InputView.inputPlayerNames();
+        String results = InputView.inputRunningResult();
         String height = InputView.inputLadderHeight();
-        return new RequestLadder(width, height);
+        return new RequestLadderGame(names, results, height);
+    }
+
+    private Ladder drawLadder(final Players players, final Height height) {
+        LineGenerator generator = createLineGenerator();
+        LadderFactory factory = new LadderFactory();
+        return factory.draw(players, height, generator);
     }
 
     private LineGenerator createLineGenerator() {
@@ -39,13 +54,39 @@ public class LadderController {
         return new RandomLineGenerator(pointGenerator);
     }
 
-    private void drawLadder(final Ladder ladder, final Width width) {
+    private void showGameScreen(final Players players, final Ladder ladder, final Results results) {
         OutputView.printLadderResultTitle();
+        OutputView.printPlayerNames(players);
+        OutputView.drawLadder(ResponseLadder.from(ladder));
+        OutputView.printResults(results);
+    }
 
-        ResponseLadder responseLadder = ResponseLadder.from(ladder);
-        OutputView.drawLadder(responseLadder);
+    private void showPlayerResult(final LadderResultBoard board) {
+        repeatUntilDone(
+                InputView::inputTargetPlayerName,
+                name -> {
+                    if (name.equals(FINISH_KEYWORD)) {
+                        OutputView.printAllLadderResult(board);
+                        return true;
+                    }
 
-        ResponseLadderResult responseResult = ResponseLadderResult.of(ladder, width);
-        OutputView.printLadderResult(responseResult);
+                    if (board.findResultOf(name).isEmpty()) {
+                        System.out.println();
+                        System.out.println(NOT_FOUND_PLAYER_RETRY_MESSAGE);
+                        return false;
+                    }
+
+                    OutputView.printSingleLadderResult(board, name);
+                    return false;
+                }
+        );
+    }
+
+    private void repeatUntilDone(final Supplier<String> inputSupplier, final Function<String, Boolean> handler) {
+        boolean done = false;
+        while (!done) {
+            String input = inputSupplier.get();
+            done = handler.apply(input);
+        }
     }
 }

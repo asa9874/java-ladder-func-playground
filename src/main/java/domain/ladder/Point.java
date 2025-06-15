@@ -1,15 +1,15 @@
-package domain;
+package domain.ladder;
 
 public record Point(
-        boolean right
+        boolean isConnectRight
 ) {
 
-    public static Point from(final boolean right) {
-        return new Point(right);
+    public static Point from(final boolean isConnectRight) {
+        return new Point(isConnectRight);
     }
 
     public Point connectNext(final boolean canConnectRight) {
-        if (this.right) {
+        if (this.isConnectRight) {
             return new Point(false);
         }
         return new Point(canConnectRight);

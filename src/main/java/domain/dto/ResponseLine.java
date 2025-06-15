@@ -1,7 +1,7 @@
 package domain.dto;
 
-import domain.Line;
-import domain.Point;
+import domain.ladder.Line;
+import domain.ladder.Point;
 import java.util.List;
 
 public record ResponseLine(
@@ -10,8 +10,8 @@ public record ResponseLine(
 
     public static ResponseLine from(final Line line) {
         List<Boolean> connections = line.getPoints().stream()
-                .limit(line.getPoints().size() - 1)
-                .map(Point::right)
+                .limit(line.size() - 1)
+                .map(Point::isConnectRight)
                 .toList();
         return new ResponseLine(connections);
     }
