@@ -3,7 +3,6 @@ package ladder.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public class LadderBuilder {
     private final LinkConnector linkConnector;
@@ -15,7 +14,6 @@ public class LadderBuilder {
 
     public Ladder build(int width, int height) {
         List<List<Boolean>> generatedLines = new ArrayList<>();
-
         generatedLines.add(linkConnector.generate(width));
 
         int col = width - 1;
@@ -27,20 +25,35 @@ public class LadderBuilder {
         }
 
         fillEmptySpace(generatedLines, width, height);
-
         return new Ladder(generatedLines);
     }
 
     private List<Boolean> duplicationLine(int width, List<Boolean> prevLine, int cols) {
+        if (cols <= 1) {
+            return linkConnector.generate(width);
+        }
+        return createLine(width, prevLine, cols);
+    }
+
+    private List<Boolean> createLine(int width, List<Boolean> prevLine, int cols) {
         List<Boolean> nextLine = linkConnector.generate(width);
+        boolean confilct = hasConflict(prevLine, nextLine, cols);
 
-        boolean b = IntStream.range(0, cols)
-                .anyMatch(j -> prevLine.get(j) && nextLine.get(j));
-
-        if (b) {
-            return duplicationLine(width, prevLine, cols);
+        while (confilct) {
+            nextLine = linkConnector.generate(width);
+            confilct = hasConflict(prevLine, nextLine, cols);
         }
         return nextLine;
+    }
+
+    private boolean hasConflict(List<Boolean> prevLine, List<Boolean> nextLine, int cols) {
+        int num = 0;
+        boolean confilct = false;
+        while (num < cols) {
+            confilct = confilct || (prevLine.get(num) && nextLine.get(num));
+            num++;
+        }
+        return confilct;
     }
 
     private void fillEmptySpace(List<List<Boolean>> lines, int width, int height) {
@@ -62,7 +75,7 @@ public class LadderBuilder {
 
         for (int cols : missingCols) {
             int randomRow = random.nextInt(height);
-            lines.get(randomRow).set(col, true);
+            lines.get(randomRow).set(cols, true);
         }
     }
 }

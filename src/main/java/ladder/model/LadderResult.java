@@ -1,6 +1,7 @@
 package ladder.model;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class LadderResult {
 
@@ -32,5 +33,28 @@ public class LadderResult {
         if (rightPosition) return currentPosition + 1;
         if (leftPosition) return currentPosition - 1;
         return currentPosition;
+    }
+
+    public int[] resultIndex(Ladder ladder) {
+        List<List<Boolean>> lines = ladder.getLines();
+        int height = lines.size();
+        int cols = (height > 0) ? lines.get(0).size() : 0;
+        int width = cols + 1;
+        int[] positions = IntStream.range(0, width).toArray();
+
+        IntStream.range(0, height * cols)
+                .filter(idx -> lines.get(idx / cols).get(idx % cols))
+                .forEach(idx -> {
+                    int col = idx % cols;
+                    int tmp = positions[col];
+                    positions[col] = positions[col + 1];
+                    positions[col + 1] = tmp;
+                });
+
+        int[] result = new int[width];
+        for (int col = 0; col < width; col++) {
+            result[positions[col]] = col;
+        }
+        return result;
     }
 }
