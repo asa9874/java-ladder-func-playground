@@ -30,4 +30,8 @@ public class OutPutView {
             System.out.println(person.getName() + " : " + ladder.getResults().get(person.getPosition()));
         }
     }
+
+    public static void printPersonResult(Person person, Ladder ladder) {
+        System.out.println(ladder.getResults().get(person.getPosition()));
+    }
 }

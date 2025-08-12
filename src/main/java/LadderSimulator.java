@@ -16,21 +16,12 @@ public class LadderSimulator {
     public void start() {
         processLadderInput();
         processLadderSimulate();
+        processLadderResult();
     }
 
     private void processLadderInput() {
-        // persons = InputParser.parsePersons(InputView.inputPersons());
-        // results = InputParser.parseResults(InputView.inputResults());
-
-        // 임시데이터
-        List<Person> persons = List.of(
-                new Person("Alice", 0),
-                new Person("Bob", 1),
-                new Person("Charlie", 2),
-                new Person("David", 3));
-
-        List<String> results = List.of("1st", "2nd", "3rd", "4th");
-
+        List<Person> persons = InputParser.parsePersons(InputView.inputPersons());
+        List<String> results = InputParser.parseResults(InputView.inputResults());
         height = InputParser.parseLadderHeight(InputView.inputLadderHeight());
         width = persons.size() - 1;
 
@@ -42,8 +33,20 @@ public class LadderSimulator {
         for (Person person : ladder.getPersons()) {
             PersonMovement(person);
         }
+    }
 
-        OutPutView.printLadderResult(ladder);
+    private void processLadderResult() {
+        while (true) {
+            String resultPersonName = InputView.inputResultPerson();
+
+            if (resultPersonName.equals("all")) {
+                OutPutView.printLadderResult(ladder);
+                return;
+            }
+
+            Person resultPerson = ladder.getPersonByName(resultPersonName);
+            OutPutView.printPersonResult(resultPerson, ladder);
+        }
     }
 
     // 우측우선이동임

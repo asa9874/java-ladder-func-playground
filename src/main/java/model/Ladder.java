@@ -36,4 +36,11 @@ public class Ladder {
         return lines.get(lineIndex).isPoint(pointIndex);
     }
 
+    public Person getPersonByName(String name) {
+        return persons.stream()
+                .filter(person -> person.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 이름의 사람이 없습니다: "));
+    }
+
 }
