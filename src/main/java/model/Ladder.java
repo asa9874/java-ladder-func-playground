@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Ladder {
+    
     private final List<Line> lines;
 
     public Ladder(int height, int width) {
@@ -23,12 +24,4 @@ public class Ladder {
         return lines.get(lineIndex).isPoint(pointIndex);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Line line : lines) {
-            sb.append(line);
-        }
-        return sb.toString();
-    }
 }

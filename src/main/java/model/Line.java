@@ -5,6 +5,7 @@ import java.util.List;
 import util.LadderRandomGenerator;
 
 public class Line {
+    
     private final List<Boolean> points;
 
     public Line(int length) {
