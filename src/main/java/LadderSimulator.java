@@ -9,13 +9,12 @@ import view.OutPutView;
 public class LadderSimulator {
 
     private Ladder ladder;
-
     private int height;
     private int width;
 
     public void start() {
         processLadderInput();
-        processLadderSimulate();
+        processLadderPersonMove();
         processLadderResult();
     }
 
@@ -29,7 +28,7 @@ public class LadderSimulator {
         OutPutView.printLadder(ladder);
     }
 
-    private void processLadderSimulate() {
+    private void processLadderPersonMove() {
         for (Person person : ladder.getPersons()) {
             PersonMovement(person);
         }
@@ -39,7 +38,7 @@ public class LadderSimulator {
         while (true) {
             String resultPersonName = InputView.inputResultPerson();
 
-            if (resultPersonName.equals("all")) {
+            if (resultPersonName.equals("all")) { // all 입력시 모든 사람의 결과 출력
                 OutPutView.printLadderResult(ladder);
                 return;
             }
