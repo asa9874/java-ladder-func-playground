@@ -4,17 +4,29 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Ladder {
-    
-    private final List<Line> lines;
 
-    public Ladder(int height, int width) {
+    private final List<Line> lines;
+    private List<Person> persons;
+    private List<String> results;
+
+    public Ladder(int height, int width, List<Person> persons, List<String> results) {
         this.lines = Stream.generate(() -> new Line(width))
                 .limit(height)
                 .toList();
+        this.persons = persons;
+        this.results = results;
     }
 
     public List<Line> getLines() {
         return lines;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public List<String> getResults() {
+        return results;
     }
 
     public boolean isPoint(int lineIndex, int pointIndex) {
