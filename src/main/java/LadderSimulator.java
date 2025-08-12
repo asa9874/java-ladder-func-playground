@@ -9,7 +9,8 @@ public class LadderSimulator {
         int height = InputParser.parseLadderHeight(InputView.inputLadderHeight());
         int width = InputParser.parseLadderWidth(InputView.inputLadderWidth());
 
-        
+        this.ladder = new Ladder(height, width);
+        System.out.println(ladder.getLines());
     }
 
 }

@@ -11,7 +11,7 @@ public class LadderVaildator {
             throw new IllegalArgumentException("사다리 높이는 숫자로 입력해야 합니다.");
         }
 
-        int heightValue = InputParser.parseLadderHeight(height);
+        int heightValue = Integer.parseInt(height);
 
         if (heightValue <= 0) {
             throw new IllegalArgumentException("사다리 높이는 0보다 큰 숫자여야 합니다.");
@@ -28,7 +28,7 @@ public class LadderVaildator {
             throw new IllegalArgumentException("사다리 넓이는 숫자로 입력해야 합니다.");
         }
 
-        int widthValue = InputParser.parseLadderWidth(width);
+        int widthValue = Integer.parseInt(width);
 
         if (widthValue <= 0) {
             throw new IllegalArgumentException("사다리 넓이는 0보다 큰 숫자여야 합니다.");

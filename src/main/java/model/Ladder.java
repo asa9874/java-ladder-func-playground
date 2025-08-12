@@ -1,12 +1,15 @@
 package model;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Ladder {
     private final List<Line> lines;
 
-    public Ladder(List<Line> lines) {
-        this.lines = lines;
+    public Ladder(int height, int width) {
+        this.lines = Stream.generate(() -> new Line(width))
+                .limit(height)
+                .toList();
     }
 
     public List<Line> getLines() {
@@ -18,5 +21,14 @@ public class Ladder {
             throw new IndexOutOfBoundsException("인덱스 범위 초과");
         }
         return lines.get(lineIndex).isPoint(pointIndex);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Line line : lines) {
+            sb.append(line);
+        }
+        return sb.toString();
     }
 }
