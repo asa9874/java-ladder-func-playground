@@ -1,8 +1,10 @@
 import model.Ladder;
 import util.InputParser;
 import view.InputView;
+import view.OutPutView;
 
 public class LadderSimulator {
+
     private Ladder ladder;
 
     public void start() {
@@ -10,7 +12,8 @@ public class LadderSimulator {
         int width = InputParser.parseLadderWidth(InputView.inputLadderWidth());
 
         this.ladder = new Ladder(height, width);
-        System.out.println(ladder.getLines());
+
+        OutPutView.printLadder(ladder);
     }
 
 }
