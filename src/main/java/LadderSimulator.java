@@ -49,7 +49,7 @@ public class LadderSimulator {
     }
 
     // 우측우선이동임
-    private void PersonMovement(Person person) {
+    private void personMovement(Person person) {
         for (int nowHeight = 0; nowHeight < height; nowHeight++) {
             if (canMoveRight(person, ladder, nowHeight)) {
                 person.moveRight();
